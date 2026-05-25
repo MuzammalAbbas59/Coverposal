@@ -6,6 +6,7 @@ interface GenerateButtonProps {
   onGenerate: () => void;
   onRetry: () => void;
   showRetry: boolean;
+  canGenerate: boolean;
 }
 
 export default function GenerateButton({
@@ -13,48 +14,42 @@ export default function GenerateButton({
   documentType,
   onGenerate,
   onRetry,
-  showRetry
+  showRetry,
+  canGenerate,
 }: GenerateButtonProps) {
   return (
-    <div className="text-center mb-12">
-      <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+    <div className="space-y-2">
+      <div className="flex gap-2.5">
         <button
           onClick={onGenerate}
           disabled={loading}
-          className="group relative bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 text-white py-6 px-16 rounded-3xl hover:from-purple-700 hover:via-pink-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed font-black text-xl shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-110 disabled:hover:scale-100 overflow-hidden"
+          className="flex-1 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold py-3.5 px-6 rounded-xl transition-colors duration-150 text-sm flex items-center justify-center gap-2"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-          <div className="relative flex items-center space-x-4">
-            {loading ? (
-              <>
-                <div className="animate-spin rounded-full h-6 w-6 border-3 border-white/30 border-t-white"></div>
-                <span className="text-lg">Generating Materials...</span>
-              </>
-            ) : (
-              <>
-                <span className="text-2xl group-hover:animate-bounce">🚀</span>
-                <span className="text-lg">
-                  Generate {documentType === 'cover-letter' ? 'Cover Letter' : 'Proposal'} & Resume Suggestions
-                </span>
-              </>
-            )}
-          </div>
+          {loading ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <span>Generating...</span>
+            </>
+          ) : (
+            `Generate ${documentType === 'cover-letter' ? 'Cover Letter' : 'Proposal'}`
+          )}
         </button>
 
-        {showRetry && (
+        {showRetry && !loading && (
           <button
             onClick={onRetry}
-            disabled={loading}
-            className="group relative bg-gradient-to-r from-emerald-600 to-cyan-600 text-white py-6 px-12 rounded-3xl hover:from-emerald-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed font-black text-xl shadow-2xl hover:shadow-emerald-500/25 transition-all duration-300 transform hover:scale-110 disabled:hover:scale-100 overflow-hidden"
+            className="bg-[#111827] border border-[#1F2937] hover:border-[#374151] text-[#9CA3AF] hover:text-white font-medium py-3.5 px-5 rounded-xl transition-colors duration-150 text-sm"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-cyan-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-            <div className="relative flex items-center space-x-3">
-              <span className="text-2xl group-hover:animate-spin">🔄</span>
-              <span className="text-lg">Retry Generation</span>
-            </div>
+            Retry
           </button>
         )}
       </div>
+
+      {!canGenerate && !loading && (
+        <p className="text-center text-xs text-[#4B5563]">
+          Fill in the job description and resume above to generate
+        </p>
+      )}
     </div>
   );
 }

@@ -1,110 +1,95 @@
-'use client';
+import MainForm from '@/components/MainForm';
 
-import { useState } from 'react';
-import { DocumentType, DetailLevel } from '@/lib/apiUtils';
-import { useFileHandlers } from '@/hooks/useFileHandlers';
-import { useMaterialsGenerator } from '@/hooks/useMaterialsGenerator';
-import DocumentTypeSelector from '@/components/DocumentTypeSelector';
-import DetailLevelSelector from '@/components/DetailLevelSelector';
-import ResumeInput from '@/components/ResumeInput';
-import JobDescriptionInput from '@/components/JobDescriptionInput';
-import GenerateButton from '@/components/GenerateButton';
-import ErrorAlert from '@/components/ErrorAlert';
-import ResultsSection from '@/components/ResultsSection';
+const steps = [
+  {
+    number: '01',
+    title: 'Paste the Job',
+    description: 'Copy any job description from Upwork, LinkedIn, or any job board',
+  },
+  {
+    number: '02',
+    title: 'Add Your Resume',
+    description: 'Paste your resume text or upload a PDF or DOCX file',
+  },
+  {
+    number: '03',
+    title: 'Get Your Proposal',
+    description: 'AI writes a tailored proposal or cover letter in seconds',
+  },
+];
 
 export default function Home() {
-  const [documentType, setDocumentType] = useState<DocumentType>('cover-letter');
-  const [detailLevel, setDetailLevel] = useState<DetailLevel>('detailed');
-
-  const fileHandlers = useFileHandlers();
-  const { materials, loading, error, generateMaterialsHandler, retryGeneration } = useMaterialsGenerator();
-
-  const handleGenerate = () => {
-    generateMaterialsHandler(
-      fileHandlers.resume,
-      fileHandlers.jobDescription,
-      documentType,
-      detailLevel,
-      fileHandlers.resumeInputMethod,
-      fileHandlers.jobInputMethod,
-      fileHandlers.resumeFile,
-      fileHandlers.jobFile
-    );
-  };
-
-  const handleRetry = () => {
-    retryGeneration();
-    handleGenerate();
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
-        <div className="absolute top-40 left-1/2 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-2000"></div>
-      </div>
+    <div className="min-h-screen bg-[#0A0F1E]">
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        {/* Header */}
-        <div className="text-center mb-12 lg:mb-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl mb-6 shadow-2xl">
-            <span className="text-3xl">✨</span>
-          </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent mb-6 leading-tight">
-            Coverposal
-          </h1>
-          <p className="text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto px-4 leading-relaxed">
-            AI-powered cover letters, proposals, and resume optimization
-            <br />
-            <span className="text-purple-300 font-semibold">Tailored to perfection for any job</span>
-          </p>
-        </div>
-
-        {/* Main Content Container */}
-        <div className="space-y-8 lg:space-y-12">
-          {/* Document Type and Detail Level Selection */}
-          <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 lg:p-8 border border-white/20 shadow-2xl">
-            <h2 className="text-2xl lg:text-3xl font-bold text-white mb-8 text-center">Customize Your Output</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-              <DocumentTypeSelector
-                documentType={documentType}
-                setDocumentType={setDocumentType}
-              />
-              <DetailLevelSelector
-                detailLevel={detailLevel}
-                setDetailLevel={setDetailLevel}
-              />
+      {/* Nav */}
+      <nav className="border-b border-[#1F2937]">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 bg-indigo-600 rounded-md flex items-center justify-center flex-shrink-0">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 1.5h6.5L12 5v7.5H2V1.5z" stroke="white" strokeWidth="1.2" strokeLinejoin="round" />
+                <path d="M8.5 1.5V5H12" stroke="white" strokeWidth="1.2" strokeLinejoin="round" />
+                <path d="M4 7.5h6M4 9.5h4" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
+              </svg>
             </div>
+            <span
+              className="font-bold text-white text-sm tracking-tight"
+              style={{ fontFamily: 'var(--font-plus-jakarta)' }}
+            >
+              Coverposal
+            </span>
           </div>
-
-          {/* Input Sections */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8">
-            <ResumeInput {...fileHandlers} />
-            <JobDescriptionInput {...fileHandlers} />
-          </div>
-
-          {/* Generate Button */}
-          <GenerateButton
-            loading={loading}
-            documentType={documentType}
-            onGenerate={handleGenerate}
-            onRetry={handleRetry}
-            showRetry={!!materials}
-          />
-
-          {/* Error Alert */}
-          <ErrorAlert error={error} />
-
-          {/* Results */}
-          {materials && (
-            <ResultsSection
-              materials={materials}
-              documentType={documentType}
-            />
-          )}
+          <span className="text-xs text-[#4B5563] font-medium">Free · No signup needed</span>
         </div>
+      </nav>
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 lg:py-16">
+
+        {/* Hero */}
+        <header className="mb-14">
+          <div className="inline-flex items-center gap-2 bg-indigo-600/10 border border-indigo-500/20 rounded-full px-3 py-1 mb-7">
+            <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full" />
+            <span className="text-indigo-300 text-xs font-medium">AI-Powered · Free to Try</span>
+          </div>
+          <h1 className="text-5xl sm:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-5">
+            Win More Jobs.<br />Write Less.
+          </h1>
+          <p className="text-[#9CA3AF] text-lg leading-relaxed max-w-lg">
+            Paste a job description, add your resume. Get a tailored Upwork proposal
+            or cover letter in 30 seconds.
+          </p>
+        </header>
+
+        {/* How it works */}
+        <section
+          aria-label="How it works"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-12"
+        >
+          {steps.map(({ number, title, description }) => (
+            <div
+              key={number}
+              className="bg-[#111827] border border-[#1F2937] rounded-xl p-5"
+            >
+              <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">
+                {number}
+              </span>
+              <h3 className="text-white font-semibold text-sm mt-2 mb-1">{title}</h3>
+              <p className="text-[#6B7280] text-xs leading-relaxed">{description}</p>
+            </div>
+          ))}
+        </section>
+
+        {/* Main Form — client island */}
+        <MainForm />
+
+        {/* Footer */}
+        <footer className="text-center mt-16 pt-8 border-t border-[#1F2937]">
+          <p className="text-[#4B5563] text-xs">
+            © {new Date().getFullYear()} Coverposal · Built to help freelancers win more jobs
+          </p>
+        </footer>
+
       </div>
     </div>
   );

@@ -19,94 +19,115 @@ export default function JobDescriptionInput({
   setJobFile,
   jobInputMethod,
   setJobInputMethod,
-  handleJobFileChange
+  handleJobFileChange,
 }: JobDescriptionInputProps) {
-  const jobFileRef = useRef<HTMLInputElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 lg:p-8 border border-white/20 shadow-2xl">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
-        <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
-            <span className="text-2xl">💼</span>
-          </div>
-          <h2 className="text-2xl lg:text-3xl font-bold text-white">Job Description</h2>
+    <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-5">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">
+            01 · Job Description
+          </span>
+          <p className="text-[#6B7280] text-xs mt-0.5">Paste the job posting you want to apply for</p>
         </div>
-        <div className="flex space-x-3">
+        <div className="flex bg-[#0A0F1E] border border-[#1F2937] rounded-lg p-0.5 gap-0.5 flex-shrink-0 ml-4">
           <button
             onClick={() => setJobInputMethod('text')}
-            className={`px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300 transform hover:scale-105 ${
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
               jobInputMethod === 'text'
-                ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/25'
-                : 'bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white border border-white/20'
+                ? 'bg-indigo-600 text-white'
+                : 'text-[#6B7280] hover:text-[#9CA3AF]'
             }`}
           >
-            📝 Text
+            Text
           </button>
           <button
             onClick={() => setJobInputMethod('file')}
-            className={`px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300 transform hover:scale-105 ${
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
               jobInputMethod === 'file'
-                ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/25'
-                : 'bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white border border-white/20'
+                ? 'bg-indigo-600 text-white'
+                : 'text-[#6B7280] hover:text-[#9CA3AF]'
             }`}
           >
-            📄 File
+            File
           </button>
         </div>
       </div>
 
       {jobInputMethod === 'text' ? (
         <textarea
-          rows={12}
-          className="w-full px-6 py-4 bg-white/5 border-2 border-white/20 rounded-2xl shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500/50 focus:border-blue-400 transition-all duration-300 resize-none text-white placeholder-gray-400 backdrop-blur-sm"
+          rows={8}
+          className="w-full bg-[#0A0F1E] border border-[#1F2937] rounded-lg px-4 py-3 text-sm text-[#F9FAFB] placeholder-[#4B5563] focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 resize-none transition-colors leading-relaxed"
           placeholder="Paste the job description here..."
           value={jobDescription}
           onChange={(e) => setJobDescription(e.target.value)}
         />
       ) : (
-        <div className="space-y-6">
-          <div className="border-2 border-dashed border-white/30 rounded-2xl p-8 lg:p-12 text-center hover:border-blue-400/50 transition-all duration-300 group bg-white/5 backdrop-blur-sm">
-            <input
-              ref={jobFileRef}
-              type="file"
-              accept=".pdf,.doc,.docx,.txt"
-              onChange={handleJobFileChange}
-              className="hidden"
-            />
-            <div className="space-y-6">
-              <div className="text-6xl group-hover:scale-110 transition-transform duration-300">💼</div>
-              <div>
-                <button
-                  onClick={() => jobFileRef.current?.click()}
-                  className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-2xl hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 font-bold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105"
-                >
-                  Choose Job Description File
-                </button>
-                <p className="text-sm text-gray-300 mt-4 font-medium">
-                  Supports PDF, DOC, DOCX, TXT
-                </p>
-              </div>
-            </div>
-          </div>
-          {jobFile && (
-            <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-2 border-green-400/50 rounded-2xl p-6 flex items-center justify-between backdrop-blur-sm shadow-lg">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
-                  <span className="text-2xl">✅</span>
+        <div>
+          <input
+            ref={fileRef}
+            type="file"
+            accept=".pdf,.doc,.docx,.txt"
+            onChange={handleJobFileChange}
+            className="hidden"
+          />
+          {!jobFile ? (
+            <button
+              onClick={() => fileRef.current?.click()}
+              className="w-full border-2 border-dashed border-[#1F2937] hover:border-indigo-500/40 rounded-lg p-8 text-center transition-colors group"
+            >
+              <svg
+                className="mx-auto mb-3 text-[#374151] group-hover:text-indigo-400 transition-colors"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
+                />
+                <polyline
+                  points="14,2 14,8 20,8"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
+                />
+                <line x1="12" y1="18" x2="12" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                <polyline points="9,15 12,12 15,15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <p className="text-sm font-medium text-[#6B7280] group-hover:text-[#9CA3AF] transition-colors">
+                Click to upload job description
+              </p>
+              <p className="text-xs text-[#4B5563] mt-1">PDF, DOC, DOCX, TXT</p>
+            </button>
+          ) : (
+            <div className="flex items-center justify-between bg-[#0A0F1E] border border-[#10B981]/30 rounded-lg px-4 py-3">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-[#10B981]/10 rounded-md flex items-center justify-center flex-shrink-0">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path
+                      d="M2 1.5h6.5L12 5v7.5H2V1.5z"
+                      stroke="#10B981"
+                      strokeWidth="1.2"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </div>
                 <div>
-                  <p className="font-bold text-white text-lg">{jobFile.name}</p>
-                  <p className="text-sm text-green-300 font-medium">
-                    {(jobFile.size / 1024).toFixed(1)} KB
-                  </p>
+                  <p className="text-sm font-medium text-[#F9FAFB]">{jobFile.name}</p>
+                  <p className="text-xs text-[#6B7280]">{(jobFile.size / 1024).toFixed(1)} KB</p>
                 </div>
               </div>
               <button
-                onClick={() => clearFile(jobFileRef, setJobFile)}
-                className="w-10 h-10 bg-red-500/20 hover:bg-red-500/30 text-red-400 hover:text-red-300 rounded-xl transition-all duration-300 flex items-center justify-center border border-red-500/30"
+                onClick={() => clearFile(fileRef, setJobFile)}
+                className="text-xs text-[#4B5563] hover:text-[#9CA3AF] transition-colors"
               >
-                ✕
+                Remove
               </button>
             </div>
           )}

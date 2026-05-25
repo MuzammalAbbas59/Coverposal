@@ -6,71 +6,70 @@ interface ResultsSectionProps {
   documentType: DocumentType;
 }
 
+function CopyButton({ text, label }: { text: string; label: string }) {
+  return (
+    <button
+      onClick={() => copyToClipboard(text)}
+      className="flex items-center gap-1.5 bg-[#1F2937] hover:bg-[#374151] text-[#9CA3AF] hover:text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
+    >
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" strokeWidth="1.2" />
+        <path d="M1 8V1h7" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      </svg>
+      {label}
+    </button>
+  );
+}
+
 export default function ResultsSection({ materials, documentType }: ResultsSectionProps) {
   return (
-    <div className="space-y-12">
-      {/* Cover Letter/Proposal Section */}
-      <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 lg:p-12 border border-white/20 shadow-2xl">
-        <div className="flex items-center space-x-4 mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
-            <span className="text-3xl">
-              {documentType === 'cover-letter' ? '📝' : '💼'}
+    <div className="space-y-3 pt-1">
+
+      {/* Cover Letter / Proposal */}
+      <div className="bg-[#111827] border border-[#1F2937] rounded-xl overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-[#1F2937]">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-indigo-500 rounded-full" />
+            <span className="text-sm font-semibold text-white">
+              {documentType === 'cover-letter' ? 'Cover Letter' : 'Upwork Proposal'}
             </span>
           </div>
-          <h2 className="text-3xl lg:text-4xl font-black text-white">
-            {documentType === 'cover-letter' ? 'Cover Letter' : 'Upwork Proposal'}
-          </h2>
+          <CopyButton text={materials.coverLetter} label="Copy" />
         </div>
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 lg:p-8 border border-white/20 shadow-lg">
-          <pre className="whitespace-pre-wrap text-white leading-relaxed font-sans text-base lg:text-lg">
+        <div className="px-5 py-5">
+          <pre
+            className="whitespace-pre-wrap text-[#D1D5DB] text-sm leading-relaxed"
+            style={{ fontFamily: 'var(--font-inter)' }}
+          >
             {materials.coverLetter}
           </pre>
         </div>
-        <div className="mt-8 flex justify-end">
-          <button
-            onClick={() => copyToClipboard(materials.coverLetter)}
-            className="group bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-2xl hover:from-purple-600 hover:to-pink-600 transition-all duration-300 font-bold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105"
-          >
-            <span className="flex items-center space-x-3">
-              <span className="text-xl group-hover:animate-bounce">📋</span>
-              <span>Copy {documentType === 'cover-letter' ? 'Cover Letter' : 'Proposal'}</span>
-            </span>
-          </button>
-        </div>
       </div>
 
-      {/* Resume Bullet Points Section */}
-      <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 lg:p-12 border border-white/20 shadow-2xl">
-        <div className="flex items-center space-x-4 mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
-            <span className="text-3xl">✨</span>
+      {/* Resume Bullet Points */}
+      <div className="bg-[#111827] border border-[#1F2937] rounded-xl overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-[#1F2937]">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+            <span className="text-sm font-semibold text-white">Resume Bullet Points</span>
           </div>
-          <h2 className="text-3xl lg:text-4xl font-black text-white">Resume Bullet Points</h2>
+          <CopyButton
+            text={materials.resumeBulletPoints.join('\n')}
+            label="Copy All"
+          />
         </div>
-        <div className="space-y-6">
-          {materials.resumeBulletPoints.map((point, index) => (
-            <div key={index} className="group bg-gradient-to-r from-white/5 to-white/10 backdrop-blur-sm rounded-2xl p-6 lg:p-8 border border-white/20 hover:border-emerald-400/50 hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300 transform hover:scale-[1.02]">
-              <div className="flex items-start space-x-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white rounded-2xl flex items-center justify-center text-lg font-black shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  {index + 1}
-                </div>
-                <p className="text-white leading-relaxed font-medium text-base lg:text-lg group-hover:text-emerald-100 transition-colors duration-300">{point}</p>
-              </div>
+        <div className="px-5 py-5 space-y-3">
+          {materials.resumeBulletPoints.map((point, i) => (
+            <div key={i} className="flex gap-3">
+              <span className="text-xs font-bold text-[#4B5563] mt-0.5 flex-shrink-0 w-4 text-right">
+                {i + 1}.
+              </span>
+              <p className="text-[#D1D5DB] text-sm leading-relaxed">{point}</p>
             </div>
           ))}
         </div>
-        <div className="mt-10 flex justify-end">
-          <button
-            onClick={() => copyToClipboard(materials.resumeBulletPoints.join('\n'))}
-            className="group bg-gradient-to-r from-emerald-500 to-cyan-500 text-white px-8 py-4 rounded-2xl hover:from-emerald-600 hover:to-cyan-600 transition-all duration-300 font-bold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105"
-          >
-            <span className="flex items-center space-x-3">
-              <span className="text-xl group-hover:animate-bounce">📋</span>
-              <span>Copy All Bullet Points</span>
-            </span>
-          </button>
-        </div>
       </div>
+
     </div>
   );
 }
